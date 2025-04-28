@@ -110,7 +110,6 @@ import (
 	v1beta11 "github.com/crossplane/provider-aws/apis/ec2/v1beta1"
 	v1beta1 "github.com/crossplane/provider-aws/apis/identity/v1beta1"
 	errors "github.com/pkg/errors"
-	ptr "k8s.io/utils/ptr"
 )
 
 // ResolveReferences of this Model.
@@ -138,7 +137,7 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	mg.Spec.ForProvider.APIIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: ptr.Deref(mg.Spec.ForProvider.SecurityGroupID, ""),
+		CurrentValue: convert.FromPtrValue(mg.Spec.ForProvider.SecurityGroupID),
 		Extract:      reference.ExternalName(),
 		Reference:    mg.Spec.ForProvider.SecurityGroupIDRef,
 		Selector:     mg.Spec.ForProvider.SecurityGroupIDSelector,
@@ -150,11 +149,11 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.SecurityGroupID")
 	}
-	mg.Spec.ForProvider.SecurityGroupID = ptr.To(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SecurityGroupID = convert.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.SecurityGroupIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: ptr.Deref(mg.Spec.ForProvider.IAMRoleARN, ""),
+		CurrentValue: convert.FromPtrValue(mg.Spec.ForProvider.IAMRoleARN),
 		Extract:      v1beta1.IAMRoleARN(),
 		Reference:    mg.Spec.ForProvider.IAMRoleARNRef,
 		Selector:     mg.Spec.ForProvider.IAMRoleARNSelector,
@@ -166,11 +165,11 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.IAMRoleARN")
 	}
-	mg.Spec.ForProvider.IAMRoleARN = ptr.To(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IAMRoleARN = convert.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.IAMRoleARNRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: ptr.Deref(mg.Spec.ForProvider.NestedTargetWithPath, ""),
+		CurrentValue: convert.FromPtrValue(mg.Spec.ForProvider.NestedTargetWithPath),
 		Extract:      v1beta1.IAMRoleARN("a.b.c"),
 		Reference:    mg.Spec.ForProvider.NestedTargetWithPathRef,
 		Selector:     mg.Spec.ForProvider.NestedTargetWithPathSelector,
@@ -182,11 +181,11 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.NestedTargetWithPath")
 	}
-	mg.Spec.ForProvider.NestedTargetWithPath = ptr.To(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NestedTargetWithPath = convert.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NestedTargetWithPathRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: ptr.Deref(mg.Spec.ForProvider.NestedTargetNoPath, ""),
+		CurrentValue: convert.FromPtrValue(mg.Spec.ForProvider.NestedTargetNoPath),
 		Extract:      IAMRoleARN("a.b.c"),
 		Reference:    mg.Spec.ForProvider.NestedTargetNoPathRef,
 		Selector:     mg.Spec.ForProvider.NestedTargetNoPathSelector,
@@ -198,11 +197,11 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.NestedTargetNoPath")
 	}
-	mg.Spec.ForProvider.NestedTargetNoPath = ptr.To(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NestedTargetNoPath = convert.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NestedTargetNoPathRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: ptr.Deref(mg.Spec.ForProvider.NoArgNoPath, ""),
+		CurrentValue: convert.FromPtrValue(mg.Spec.ForProvider.NoArgNoPath),
 		Extract:      IAMRoleARN(),
 		Reference:    mg.Spec.ForProvider.NoArgNoPathRef,
 		Selector:     mg.Spec.ForProvider.NoArgNoPathSelector,
@@ -214,7 +213,7 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.NoArgNoPath")
 	}
-	mg.Spec.ForProvider.NoArgNoPath = ptr.To(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NoArgNoPath = convert.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NoArgNoPathRef = rsp.ResolvedReference
 
 	if mg.Spec.ForProvider.Network != nil {
@@ -286,7 +285,7 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	mg.Spec.ForProvider.RouteTableIDsRefs = mrsp.ResolvedReferences
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: ptr.Deref(mg.Spec.ForProvider.CustomConfiguration, ""),
+		CurrentValue: mg.Spec.ForProvider.CustomConfiguration,
 		Extract:      Configuration(),
 		Reference:    mg.Spec.ForProvider.CustomConfigurationRef,
 		Selector:     mg.Spec.ForProvider.CustomConfigurationSelector,
@@ -298,7 +297,7 @@ func (mg *Model) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.CustomConfiguration")
 	}
-	mg.Spec.ForProvider.CustomConfiguration = ptr.To(rsp.ResolvedValue)
+	mg.Spec.ForProvider.CustomConfiguration = rsp.ResolvedValue
 	mg.Spec.ForProvider.CustomConfigurationRef = rsp.ResolvedReference
 
 	return nil
@@ -320,7 +319,7 @@ func TestNewResolveReferences(t *testing.T) {
 		t.Error(err)
 	}
 	f := jen.NewFilePath("golang.org/fake/v1alpha1")
-	NewResolveReferences(xptypes.NewTraverser(comments.In(pkgs[0])), "mg", "example.org/client", "example.org/reference", "example.org/convert", "k8s.io/utils/ptr")(f, pkgs[0].Types.Scope().Lookup("Model"))
+	NewResolveReferences(xptypes.NewTraverser(comments.In(pkgs[0])), "mg", "example.org/client", "example.org/reference", "example.org/convert")(f, pkgs[0].Types.Scope().Lookup("Model"))
 	if diff := cmp.Diff(generated, fmt.Sprintf("%#v", f)); diff != "" {
 		t.Errorf("NewResolveReferences(): -want, +got\n%s", diff)
 	}
