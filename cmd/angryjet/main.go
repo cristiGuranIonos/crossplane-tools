@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	kingpin "github.com/alecthomas/kingpin/v2"
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/pkg/errors"
 	"golang.org/x/tools/go/packages"
 
@@ -61,9 +61,6 @@ const (
 
 	ReferenceAlias  = "reference"
 	ReferenceImport = "github.com/crossplane/crossplane-runtime/pkg/reference"
-
-	PtrAlias  = "ptr"
-	PtrImport = "k8s.io/utils/ptr"
 )
 
 func main() {
@@ -234,7 +231,7 @@ func GenerateReferences(filename, header string, p *packages.Package) error {
 	comm := comments.In(p)
 
 	methods := method.Set{
-		"ResolveReferences": method.NewResolveReferences(types.NewTraverser(comm), receiver, ClientImport, ReferenceImport, ConvertImport, PtrImport),
+		"ResolveReferences": method.NewResolveReferences(types.NewTraverser(comm), receiver, ClientImport, ReferenceImport, ConvertImport),
 	}
 
 	err := generate.WriteMethods(p, methods, filepath.Join(filepath.Dir(p.GoFiles[0]), filename),
@@ -243,7 +240,6 @@ func GenerateReferences(filename, header string, p *packages.Package) error {
 			ClientImport:    ClientAlias,
 			ConvertImport:   ConvertAlias,
 			ReferenceImport: ReferenceAlias,
-			PtrAlias:        PtrImport,
 		}),
 		generate.WithMatcher(match.AllOf(
 			match.Managed(),
